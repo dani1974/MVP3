@@ -42,4 +42,26 @@ Foi construído um modelo de dados em Esquema Estrela para facilitar a análise.
 - **Quarter**: Trimestre da despesa.
 
 ### Catálogo de Dados
-O cat
+O catálogo de dados contém uma descrição detalhada de cada tabela e seus respectivos campos, incluindo os valores mínimos e máximos esperados para dados numéricos e possíveis categorias para dados categóricos.
+
+#### Linhagem dos Dados
+- **Fonte dos Dados**: Kaggle
+- **Técnica de Coleta**: Download manual seguido de upload para o DBFS
+- **Transformações**: Conversões de tipos de dados e normalização
+
+## Carga
+Os dados foram carregados para o Data Warehouse utilizando o Databricks. As etapas de ETL (Extração, Transformação e Carga) foram realizadas conforme descrito abaixo:
+1. **Extração (Extract)**: Os dados foram extraídos do DBFS.
+2. **Transformação (Transform)**: Conversão dos tipos de dados e normalização das avaliações.
+3. **Carga (Load)**: Os dados transformados foram carregados para as tabelas no Databricks.
+
+### Documentação das Transformações
+- **Conversão de Tipos**: Campos `employees` e `estimated_revenues` convertidos para `int`.
+- **Normalização**: Avaliações normalizadas para facilitar a comparação.
+
+**Scripts Utilizados**:
+```python
+df1 = spark.read.format("csv").option("header", "true").load("dbfs:/FileStore/shared_uploads/danilameirao@gmail.com/Hospital_General_Information-5.csv")
+df1.write.format("delta").mode("overwrite").saveAsTable("Hospital_General_Information")
+
+
